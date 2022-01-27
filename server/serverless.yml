@@ -1,0 +1,29 @@
+service:
+ name: test-api
+
+plugins:
+  - serverless-offline
+
+provider:
+  name: aws
+  runtime: nodejs12.x
+  environment:
+    DB_HOST: ${env:MYSQL_HOST}
+    DB_PORT: ${env:MYSQL_PORT}
+    DB_USERNAME: ${env:MYSQL_USER}
+    DB_PASSWORD: ${env:MYSQL_PASSWORD}
+    DB_DATABASE: ${env:MYSQL_DATABASE}
+    versionFunctions: false
+
+functions:
+  create:
+    handler: dist/lambda.handler
+    events:
+      - http:
+          cors: true
+          path: "/"
+          method: any
+      - http:
+          cors: true
+          path: "{proxy+}"
+          method: any
